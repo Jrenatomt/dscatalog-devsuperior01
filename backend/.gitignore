@@ -30,4 +30,10 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+.DS_Store
+.vscode
+.metadata
+.mvn
+
+mvnw
+mvnw.cmd
