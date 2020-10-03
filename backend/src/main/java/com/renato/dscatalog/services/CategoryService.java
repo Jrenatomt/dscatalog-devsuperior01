@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.renato.dscatalog.dto.CategoryDTO;
 import com.renato.dscatalog.entities.Category;
 import com.renato.dscatalog.repositories.CategoryRepository;
+import com.renato.dscatalog.services.exceptions.DatabaseException;
 import com.renato.dscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -32,7 +35,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
-		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Cliente Não encontrado."));
+		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Categoria não encontrada."));
 		return new CategoryDTO(entity);
 	}
 
@@ -56,4 +59,14 @@ public class CategoryService {
 		    	throw new ResourceNotFoundException("id not found" + id);
 		     }
        }
+
+	public void delete(Long id) {
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException("id not found" + id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException("Não é possivel deletar uma categoria que possiu produtos.");
+		}
+	}
   }
