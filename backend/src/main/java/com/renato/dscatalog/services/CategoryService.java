@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.renato.dscatalog.dto.CategoryDTO;
 import com.renato.dscatalog.entities.Category;
 import com.renato.dscatalog.repositories.CategoryRepository;
-import com.renato.dscatalog.services.exceptions.EntityNotFoundException;
+import com.renato.dscatalog.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CategoryService {
@@ -30,7 +32,7 @@ public class CategoryService {
 	@Transactional(readOnly = true)
 	public CategoryDTO findById(Long id) {
 		Optional<Category> obj = repository.findById(id);
-		Category entity = obj.orElseThrow(() -> new EntityNotFoundException("Cliente Não encontrado."));
+		Category entity = obj.orElseThrow(() -> new ResourceNotFoundException("Cliente Não encontrado."));
 		return new CategoryDTO(entity);
 	}
 
@@ -42,4 +44,16 @@ public class CategoryService {
 		return new CategoryDTO(entity);
 	}
 
-}
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		try {
+			 Category entity = repository.getOne(id);
+			 entity.setName(dto.getName());
+			 entity = repository.save(entity);
+			 return new CategoryDTO(entity);
+			}
+		     catch(EntityNotFoundException e) {
+		    	throw new ResourceNotFoundException("id not found" + id);
+		     }
+       }
+  }
