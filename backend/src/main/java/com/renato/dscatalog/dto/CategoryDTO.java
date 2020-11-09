@@ -2,12 +2,15 @@ package com.renato.dscatalog.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotBlank;
+
 import com.renato.dscatalog.entities.Category;
 
 public class CategoryDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	@NotBlank(message = "Preenchimento Obrigatório")
 	private String name;
 
 	public CategoryDTO() {

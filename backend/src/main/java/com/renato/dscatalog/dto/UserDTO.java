@@ -4,15 +4,29 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.renato.dscatalog.entities.User;
 
 public class UserDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;
+	@NotBlank(message = "Preenchimento Obrigatório")
+	@Length(min = 2, max = 120, message="O tamanho deve ser entre 2 e 120 caracteres")
 	private String firstName;
+	@NotBlank(message = "Preenchimento Obrigatório")
+	@Length(min = 2, max = 120, message="O tamanho deve ser entre 2 e 120 caracteres")
 	private String lastName;
+	
+	@Email(message = "digite um email valido")
+	@Column (unique = true)
 	private String email;
+	
 	
 	Set<RoleDTO> roles = new HashSet<>();
 	

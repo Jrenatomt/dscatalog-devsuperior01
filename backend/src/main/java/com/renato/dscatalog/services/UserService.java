@@ -76,7 +76,7 @@ public class UserService {
 		} catch (EmptyResultDataAccessException e) {
 			throw new ResourceNotFoundException("id not found" + id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DatabaseException("Não é possivel deletar uma categoria que possiu produtos.");
+			throw new DatabaseException("Constraints Violation");
 		}
 	}
 	
