@@ -8,6 +8,6 @@ import com.renato.dscatalog.entities.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	
-	User findByEmail(String Email);
+	User findByEmail(String email);
 
 }
