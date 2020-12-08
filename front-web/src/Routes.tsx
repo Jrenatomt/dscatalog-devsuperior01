@@ -1,14 +1,16 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
+import { Router, Switch, Route, Redirect } from 'react-router-dom'
 import Navbar from './core/components/Navbar';
 import Admin from './pages/Admin';
 import Auth from './pages/Auth';
 import Catalog from './pages/Catalog';
 import ProductDetails from './pages/Catalog/components/ProductDetails';
 import Home from './pages/Home';
+import history  from  './core/utils/history'
+import PrivateRoute from './core/components/Routes/PrivateRoute';
 
 const Routes = () => (
-  <BrowserRouter>
+  <Router history={history}>
      <Navbar />
       <Switch>
         <Route path="/" exact>
@@ -25,11 +27,11 @@ const Routes = () => (
          <Auth />
         </Route>
         <Redirect from="/admin" to="/admin/products" exact/>
-        <Route path="/admin">
+        <PrivateRoute path="/admin">
           <Admin />
-        </Route>
+        </PrivateRoute>
       </Switch>
-  </BrowserRouter>
+  </Router>
 );
 
 export default Routes;
